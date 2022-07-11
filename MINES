@@ -1,0 +1,146 @@
+import random
+import numpy as np
+import matplotlib.pyplot as plt
+
+v = np.zeros((5,5)).astype(int)
+mult = float(1)
+tot = 0
+ganhos = []
+multipli = [1]
+cor = 'a'
+matriz = []
+linha = []
+posicao = []
+posicoes = []
+max = 0
+print("*"*30)
+print("VAMOS JOGAR MINES")
+print("*"*30)
+dif = input("Digite a dificuldade (facil <f>, medio <m> ou dificil <d>): ")
+
+def campo():
+  for i in range(1,6):
+    for j in range(1,6):
+      linha.append(j)
+    matriz.append(linha[:])
+    linha.clear()
+
+def imprime_campo():
+  i = 1
+  a = False
+  print("  1  2  3  4  5")
+  for c, linha in enumerate(matriz):
+    print(i, end =' ')
+    for c1, coluna in enumerate(linha):
+      for pos in posicoes:
+        a = False
+        if pos[0] - 1 == c and pos[1] - 1 == c1:
+          a = True
+          break
+      if a:
+        print('X', end = '  ')
+      else:
+        print('?', end = '  ')
+    print()
+    i += 1
+
+
+def minas():
+  if dif == 'f':
+    n = 4
+  if dif == 'm':
+    n = 7   
+  if dif == 'd':
+    n = 10
+  for i in range(1,n):
+    while True:
+      lin = random.randint(0,4)
+      col = random.randint(0,4)
+      if v[lin][col] != 1:
+        v[lin][col] = 1
+        break
+
+def quant_max():
+  global max
+  if dif == 'f':
+    max = 23
+  if dif == 'm':
+    max = 20    
+  if dif == 'd':
+    max = 17
+
+def multp():
+  global mult
+  if dif == 'f':
+    mult = 1.10
+  if dif == 'm':
+    mult = 1.15   
+  if dif == 'd':
+    mult = 1.20
+
+def jogo():
+  global mult
+  global tot
+  global cor
+  global max
+
+  val = float(input("Qual valor vc deseja apostar: "))
+  ganhos.append(val)
+  imprime_campo()
+  for i in range(0,30):
+    if i == max:
+      print("Parabens!! voce conseguiu acertar todas as posiçoes e saiu com",round(tot, 2),"reais")
+      cor = 'green'
+      break
+
+    jlin = int(input("Digite a linha que quer jogar: "))
+    jcol = int(input("Digite a coluna que quer jogar: "))
+
+    if jlin <= 0 or jlin > 5 or jcol <= 0 or jcol > 5:
+      print("Essa posiçao não existe, escola outra: ")
+      continue
+
+    posicao.append(jlin)
+    posicao.append(jcol)
+    posicoes.append(posicao[:])
+    posicao.clear()
+    
+    if v[jlin - 1][jcol - 1] == -1:
+      print("Essa posiçao ja foi escolhida, escola outra: ")
+      continue
+
+    tot = val*mult
+    mult += mult 
+
+    if v[jlin - 1][jcol - 1] == 1:
+      print("voce perdeu! :( ")
+      ganhos.append(0)
+      multipli.append(mult)
+      cor = 'red'    
+      break    
+
+    if v[jlin - 1][jcol - 1] == 0:
+      v[jlin - 1][jcol - 1] = -1
+      matriz[jlin - 1][jcol - 1] = 'X'
+      ganhos.append(tot)
+      multipli.append(mult)  
+      imprime_campo()  
+      print("vc está com",tot)
+      resp = input("voce quer continuar jogando? ('s' ou 'n') ")
+      if resp == 'n':
+        print("PARABENS vc saiu com",round(tot, 2),"reais")
+        cor = 'green'
+        break
+
+def grafico():
+  plt.title("Progressão dos ganhos")
+  plt.plot(multipli, ganhos, C = cor, marker = 'o')
+  plt.show()
+
+
+campo()
+minas()
+quant_max()
+multp()
+jogo()
+grafico()

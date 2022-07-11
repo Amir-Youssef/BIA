@@ -1,0 +1,184 @@
+import random
+import numpy as np
+import matplotlib.pyplot as plt
+
+v = np.zeros((5,5)).astype(int) 
+vidas = 4
+rod = 0 
+rods = []
+matriz = [] 
+linha = []
+posicao = []
+posicoes = []
+print("*"*30)
+print("VAMOS JOGAR BATALHA NAVAL")
+print("*"*30)
+
+def campo():
+   
+  for i in range(1,6): 
+    for j in range(1,6):
+      linha.append(j)
+    matriz.append(linha[:])
+    linha.clear()
+
+def imprime_campo(): 
+  i = 1
+  a = False
+  print("  1  2  3  4  5")
+  for c, linha in enumerate(matriz):
+    print(i, end =' ')
+    for c1, coluna in enumerate(linha):
+      for pos in posicoes:
+        a = False
+        if pos[0] - 1 == c and pos[1] - 1 == c1:
+          a = True
+          break
+      if a:
+        print('X', end = '  ')
+      else:
+        print('?', end = '  ')
+    print()
+    i += 1
+
+
+def posicionamento(): 
+  print("Voce possui para posicionar 1 navio, 1 submarino, 1 barco e 1 porta aviões")
+  imprime_campo()
+  while True:
+    poslin = int(input("digite a linha que quer posicionar o navio: "))
+    poscol = int(input("digite a coluna que quer posicionar o navio: "))
+
+    if poslin <= 0 or poslin > 5 or poscol <= 0 or poscol > 5: 
+      print("Essa posiçao não existe, escola outra: ")
+      continue
+
+    if v[poslin - 1][poscol - 1] != 0:
+      print("Essa posiçao ja foi escolhida, escola outra: ")
+      continue
+
+    if v[poslin - 1][poscol - 1] == 0:
+      v[poslin - 1][poscol - 1] = 1
+      break
+
+  while True:
+    poslin = int(input("digite a linha que quer posicionar o submarino: "))
+    poscol = int(input("digite a coluna que quer posicionar o submarino: "))
+
+    if poslin <= 0 or poslin > 5 or poscol <= 0 or poscol > 5:
+      print("Essa posiçao não existe, escola outra: ")
+      continue
+
+    if v[poslin - 1][poscol - 1] != 0:
+      print("Essa posiçao ja foi escolhida, escola outra: ")
+      continue
+
+    if v[poslin - 1][poscol - 1] == 0:
+      v[poslin - 1][poscol - 1] = 1
+      break
+
+  while True:
+    poslin = int(input("digite a linha que quer posicionar o barco: "))
+    poscol = int(input("digite a coluna que quer posicionar o barco: "))
+
+    if poslin <= 0 or poslin > 5 or poscol <= 0 or poscol > 5:
+      print("Essa posiçao não existe, escola outra: ")
+      continue
+
+    if v[poslin - 1][poscol - 1] != 0:
+      print("Essa posiçao ja foi escolhida, escola outra: ")
+      continue
+
+    if v[poslin - 1][poscol - 1] == 0:
+      v[poslin - 1][poscol - 1] = 1
+      break
+
+  while True:
+    poslin = int(input("digite a linha que quer posicionar o porta aviões: "))
+    poscol = int(input("digite a coluna que quer posicionar o porta aviões: "))
+
+    if poslin <= 0 or poslin > 5 or poscol <= 0 or poscol > 5:
+      print("Essa posiçao não existe, escola outra: ")
+      continue
+
+    if v[poslin - 1][poscol - 1] != 0:
+      print("Essa posiçao ja foi escolhida, escola outra: ")
+      continue
+
+    if v[poslin - 1][poscol - 1] == 0:
+      v[poslin - 1][poscol - 1] = 1
+      break
+
+def jogo():
+  global rod
+  global vidas
+
+  imprime_campo() 
+  
+  while True:
+    while True:
+
+      jlin = int(input("Digite a linha que quer atacar: ")) 
+      jcol = int(input("Digite a coluna que quer atacar: "))
+
+      if jlin <= 0 or jlin > 5 or jcol <= 0 or jcol > 5: 
+        print("Essa posiçao não existe, escola outra: ")
+        continue
+
+      posicao.append(jlin)
+      posicao.append(jcol)
+      posicoes.append(posicao[:])
+      posicao.clear() 
+      
+      if v[jlin - 1][jcol - 1] == -1: 
+        print("Essa posiçao ja foi escolhida, escola outra: ") 
+        continue
+
+      if v[jlin - 1][jcol - 1] == 1: 
+        v[jlin - 1][jcol - 1] = -1
+        matriz[jlin - 1][jcol - 1] = 'X'
+        imprime_campo() 
+        print("voce acertou uma embarcaçao!!!")
+        rod += 1
+        vidas -=1 
+        break    
+
+      if v[jlin - 1][jcol - 1] == 0:
+        v[jlin - 1][jcol - 1] = -1
+        imprime_campo() 
+        print("vc acertou a água")
+        rod += 1 
+        break
+    if vidas == 0: 
+      rods.append(rod)
+      print("Parabens, voce conseguiu acertar todas as embarcações em",rod,"rodadas")
+      break
+
+print("Jogador 1 pocione suas embarcações")
+campo()
+posicionamento()
+print("*"*30)
+print("Jogador 2 ataque as embarcações do jogador 1") 
+jogo()
+print("*"*30)
+v = np.zeros((5,5)).astype(int)
+matriz = []
+linha = []
+posicao = []
+posicoes = []
+vidas = 4
+rod = 0
+print("Jogador 2 pocione suas embarcações")
+campo()
+posicionamento()
+print("Jogador 1 ataque as embarcações do jogador 2")
+jogo()
+print("*"*30)
+print("o jogador 1 acertou as embarcações do jogador 2 em",rods[0],"rodadas") #com as quantidades de rodadas salvas eu compara e vejo quem é o vencedor(jogador com menos rodadas)
+print("o jogador 2 acertou as embarcações do jogador 1 em",rods[1],"rodadas")
+if rods[0] > rods[1]:
+  print("O jogador 2 venceu")
+if rods[0] < rods[1]:
+  print("O jogador 1 venceu")
+if rods[0] == rods[1]:
+  print("Houve empate")

@@ -1,0 +1,32 @@
+from random import randint 
+n = int(input("Digite a quantidade de palavras que quer acrecentar ao caça palavras: "))
+s = input("Digite a palavra base: ")
+s = list(s)
+maior = s
+for i in range(0,n):
+  pala = input("Digite a palavra: ") 
+  c = pala[0]
+  lst = []
+  for pos, char in enumerate(s): 
+    if char == c:
+        lst.append(pos)
+
+  if len(lst) == 0: 
+    s.append(pala)
+  else:
+    lposi = lst[randint(0, len(lst) - 1)]
+    s[lposi] = pala
+
+  if len(pala) > len(maior):
+    maior = pala
+
+for letra in s: 
+    if len(letra) == len(maior):
+        for i in letra:
+            print(i, end=' ')
+    else: 
+        for c in range(len(maior) - len(letra)):
+            letra += chr(randint(ord('a'), ord('z')))
+        for i in letra:
+            print(i, end=' ')
+    print()

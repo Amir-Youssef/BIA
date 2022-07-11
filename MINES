@@ -2,7 +2,7 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 
-v = np.zeros((5,5)).astype(int)
+v = np.zeros((5,5)).astype(int) 
 mult = float(1)
 tot = 0
 ganhos = []
@@ -18,7 +18,7 @@ print("VAMOS JOGAR MINES")
 print("*"*30)
 dif = input("Digite a dificuldade (facil <f>, medio <m> ou dificil <d>): ")
 
-def campo():
+def campo(): 
   for i in range(1,6):
     for j in range(1,6):
       linha.append(j)
@@ -63,11 +63,11 @@ def minas():
 def quant_max():
   global max
   if dif == 'f':
-    max = 23
+    max = 22
   if dif == 'm':
-    max = 20    
+    max = 19    
   if dif == 'd':
-    max = 17
+    max = 16
 
 def multp():
   global mult
@@ -84,10 +84,11 @@ def jogo():
   global cor
   global max
 
-  val = float(input("Qual valor vc deseja apostar: "))
+  i = 0
+  val = float(input("Qual valor vc deseja apostar: ")) 
   ganhos.append(val)
-  imprime_campo()
-  for i in range(0,30):
+  imprime_campo() 
+  while True:
     if i == max:
       print("Parabens!! voce conseguiu acertar todas as posiçoes e saiu com",round(tot, 2),"reais")
       cor = 'green'
@@ -96,7 +97,7 @@ def jogo():
     jlin = int(input("Digite a linha que quer jogar: "))
     jcol = int(input("Digite a coluna que quer jogar: "))
 
-    if jlin <= 0 or jlin > 5 or jcol <= 0 or jcol > 5:
+    if jlin <= 0 or jlin > 5 or jcol <= 0 or jcol > 5: 
       print("Essa posiçao não existe, escola outra: ")
       continue
 
@@ -105,7 +106,7 @@ def jogo():
     posicoes.append(posicao[:])
     posicao.clear()
     
-    if v[jlin - 1][jcol - 1] == -1:
+    if v[jlin - 1][jcol - 1] == -1: 
       print("Essa posiçao ja foi escolhida, escola outra: ")
       continue
 
@@ -114,25 +115,26 @@ def jogo():
 
     if v[jlin - 1][jcol - 1] == 1:
       print("voce perdeu! :( ")
-      ganhos.append(0)
+      ganhos.append(0) 
       multipli.append(mult)
       cor = 'red'    
       break    
 
-    if v[jlin - 1][jcol - 1] == 0:
-      v[jlin - 1][jcol - 1] = -1
+    if v[jlin - 1][jcol - 1] == 0: 
+      v[jlin - 1][jcol - 1] = -1 
       matriz[jlin - 1][jcol - 1] = 'X'
-      ganhos.append(tot)
+      ganhos.append(tot) 
       multipli.append(mult)  
       imprime_campo()  
+      i += 1
       print("vc está com",tot)
-      resp = input("voce quer continuar jogando? ('s' ou 'n') ")
+      resp = input("voce quer continuar jogando? ('s' ou 'n') ") 
       if resp == 'n':
         print("PARABENS vc saiu com",round(tot, 2),"reais")
         cor = 'green'
         break
 
-def grafico():
+def grafico(): 
   plt.title("Progressão dos ganhos")
   plt.plot(multipli, ganhos, C = cor, marker = 'o')
   plt.show()
